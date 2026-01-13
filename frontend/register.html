@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="auth-form">
+            <h2>Регистрация</h2>
+            <form id="register-form">
+                <div>
+                    <label>Логин:</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div>
+                    <label>Email:</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div>
+                    <label>Пароль:</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" required>
+                        <button type="button" class="toggle-password" id="toggle-password" aria-label="Показать пароль">👁️</button>
+                    </div>
+                </div>
+                <button type="submit">Зарегистрироваться</button>
+            </form>
+            <p id="error-message" style="color: red;"></p>
+            <p id="success-message" style="color: green;"></p>
+            <p><a href="/login">Уже есть аккаунт? Войти</a></p>
+            <p><a href="/">На главную</a></p>
+        </div>
+    </div>
+    
+    <script>
+        // Функция показа/скрытия пароля
+        document.getElementById('toggle-password').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const toggleButton = document.getElementById('toggle-password');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleButton.textContent = '🙈';
+                toggleButton.setAttribute('aria-label', 'Скрыть пароль');
+            } else {
+                passwordInput.type = 'password';
+                toggleButton.textContent = '👁️';
+                toggleButton.setAttribute('aria-label', 'Показать пароль');
+            }
+        });
+        
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            const formData = new URLSearchParams();
+            formData.append('username', username);
+            formData.append('email', email);
+            formData.append('password', password);
+            
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('success-message').textContent = data.message || 'Регистрация успешна';
+                    document.getElementById('error-message').textContent = '';
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 2000);
+                } else {
+                    document.getElementById('error-message').textContent = data.message || 'Ошибка регистрации';
+                    document.getElementById('success-message').textContent = '';
+                }
+            } catch (error) {
+                document.getElementById('error-message').textContent = 'Ошибка соединения';
+            }
+        });
+    </script>
+</body>
+</html>
+

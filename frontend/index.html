@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прогноз экзаменов</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Прогнозирование качества сдачи экзаменов</h1>
+            <div id="user-info" style="display: none;">
+                <span id="username"></span>
+                <button onclick="logout()">Выйти</button>
+                <button id="admin-btn" onclick="showAdminPanel()" style="display: none;">Админ-панель</button>
+            </div>
+        </header>
+        
+            <div id="login-required">
+            <p>Пожалуйста, войдите в систему.</p>
+            <a href="/login">Войти</a> | <a href="/register">Регистрация</a>
+        </div>
+        
+        <div id="main-content" style="display: none;">
+            <h2>Список студентов</h2>
+            <div class="filter-section">
+                <label for="group-filter">Фильтр по группе:</label>
+                <select id="group-filter" onchange="filterByGroup()">
+                    <option value="">Все группы</option>
+                </select>
+                <button onclick="sortStudents('name')">Сортировать по имени</button>
+                <button onclick="sortStudents('group')">Сортировать по группе</button>
+            </div>
+            <div id="students-list"></div>
+            
+            <h2>Прогноз сдачи экзамена</h2>
+            <div>
+                <label>Выберите студента:</label>
+                <select id="student-select">
+                    <option value="">-- Выберите --</option>
+                </select>
+                <button onclick="getPrediction()">Получить прогноз</button>
+            </div>
+            <div id="prediction-result"></div>
+        </div>
+        
+        <div id="admin-panel" style="display: none;">
+            <h2>Админ-панель</h2>
+            
+            <div class="admin-section">
+                <h3>Управление студентами</h3>
+                <div class="filter-section">
+                    <button onclick="showAddStudentForm()">Добавить студента</button>
+                    <label for="admin-group-filter">Фильтр по группе:</label>
+                    <select id="admin-group-filter" onchange="filterAdminByGroup()">
+                        <option value="">Все группы</option>
+                    </select>
+                    <button onclick="sortAdminStudents('name')">Сортировать по имени</button>
+                    <button onclick="sortAdminStudents('group')">Сортировать по группе</button>
+                </div>
+                <div id="students-admin-list"></div>
+            </div>
+            
+            <div class="admin-section">
+                <h3>Управление оценками</h3>
+                <button onclick="showAddGradeForm()">Добавить оценку</button>
+                <div id="grades-admin-list"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="static/app.js"></script>
+</body>
+</html>
+

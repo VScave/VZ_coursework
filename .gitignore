@@ -1,0 +1,25 @@
+# Собранные файлы
+build/
+server
+*.o
+*.exe
+*.out
+
+# Базы данных
+*.db
+*.sqlite
+
+# Временные файлы
+*.swp
+*.swo
+*~
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Заголовочные файлы библиотек (нужно скачивать отдельно)
+backend/httplib.h
+
